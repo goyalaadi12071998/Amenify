@@ -1,0 +1,29 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+aniso8601 = "==7.0.0"
+asgiref = "==3.3.1"
+django = "*"
+django-filter = "==2.4.0"
+django-graphql-auth = "==0.3.15"
+django-graphql-jwt = "==0.3.0"
+graphene = "==2.1.8"
+graphene-django = "==2.13.0"
+graphql-core = "==2.3.2"
+graphql-relay = "==2.0.1"
+promise = "==2.3"
+pyjwt = "==1.7.1"
+pytz = "==2020.4"
+rx = "==1.6.1"
+singledispatch = "==3.4.0.3"
+six = "==1.15.0"
+sqlparse = "==0.4.1"
+unidecode = "==1.1.1"
+
+[dev-packages]
+
+[requires]
+python_version = "3.9"
