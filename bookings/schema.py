@@ -24,11 +24,10 @@ class ServiceQuery(graphene.ObjectType):
         return Service.objects.all()
 
 
-class BookingQuery(graphene.ObjectType):
+class BookingQuery(graphene.ObjectType):    
     all_bookings = graphene.List(BookingType)
 
-    def resolve_all_bookings(root, info):
-        breakpoint()
+    def resolve_all_bookings(root, info, **kwargs):
         return Booking.objects.all()
 
 class CreateBookingMutation(graphene.Mutation):

@@ -4,5 +4,5 @@ from bookings.schema import bookingschema, serviceschema
 
 urlpatterns = [
     path("book/", GraphQLView.as_view(graphiql=True, schema=bookingschema)),
-    path("service/", GraphQLView.as_view(graphiql=True, schema=serviceschema))
+    path("", GraphQLView.as_view(graphiql=True, schema=serviceschema))
 ]
