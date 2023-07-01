@@ -1,6 +1,8 @@
 import graphene
 import datetime
 from graphene_django import DjangoObjectType
+from graphql_jwt.decorators import login_required
+
 from .models import Service, Booking
 from users.models import ExtendUser
 
@@ -26,8 +28,8 @@ class BookingQuery(graphene.ObjectType):
     all_bookings = graphene.List(BookingType)
 
     def resolve_all_bookings(root, info):
+        breakpoint()
         return Booking.objects.all()
-
 
 class CreateBookingMutation(graphene.Mutation):
     class Arguments:
@@ -37,20 +39,22 @@ class CreateBookingMutation(graphene.Mutation):
 
     booking = graphene.Field(BookingType)
     @classmethod
+    @login_required
     def mutate(cls, root, info, quantity, user, service):
-        service = Service.objects.filter(id=service).first()
-        user = ExtendUser.objects.filter(id=user).first()
-        price = quantity*service.price
-        booking = Booking(
-            quantity=quantity,
-            price=price,
-            user=user,
-            service=service,
-            created_at=datetime.datetime.now(),
-            updated_at=datetime.datetime.now(),
-        )
-        booking.save()
-        return BookingMutation(booking=booking)
+        if info.context.user is not None:
+            service = Service.objects.filter(id=service).first()
+            user = ExtendUser.objects.filter(id=user).first()
+            price = quantity*service.price
+            booking = Booking(
+                quantity=quantity,
+                price=price,
+                user=user,
+                service=service,
+                created_at=datetime.datetime.now(),
+                updated_at=datetime.datetime.now(),
+            )
+            booking.save()
+            return CreateBookingMutation(booking=booking)
 
 
 class UpdateBookingStatusMutation(graphene.Mutation):
@@ -60,6 +64,7 @@ class UpdateBookingStatusMutation(graphene.Mutation):
 
     booking = graphene.Field(BookingType)
     @classmethod
+    @login_required
     def mutate(cls, root, info, bookingid, new_status):
         existing = Booking.objects.get(id=bookingid)
         existing.status = new_status
